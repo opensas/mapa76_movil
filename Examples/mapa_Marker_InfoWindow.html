@@ -15,7 +15,7 @@
         var myLatlng = new google.maps.LatLng( -34.58174,-58.4322 );
         var mapOptions = {
           center: myLatlng,
-          zoom: 15,
+          zoom: 12,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
@@ -34,9 +34,20 @@
             map: map,
             title: 'Uluru (Ayers Rock)'
         });
+
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.open(map,marker);
-        });        
+        }); 
+
+        var layer = new google.maps.FusionTablesLayer({
+         query: {
+            select: 'geo',
+            from: '1KiW-7fK2u-wjSLmDafvTqhrdtqzN2bTT89qTELs',
+            orderBy: 'ST_DISTANCE(geo, LATLNG(-34.58174,-58.4322))',
+            limit: 10
+          }
+       });
+         layer.setMap(map);               
       }
     </script>
   </head>
