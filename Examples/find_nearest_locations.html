@@ -43,6 +43,7 @@
         var layer = new google.maps.FusionTablesLayer({
             query: {
               select: 'Address',
+              // from: '5136458',
               from: '15UY2pgiz8sRkq37p2TaJd64U7M_2HDVqHT3Quw',
               orderBy: 'ST_DISTANCE(Address, LATLNG(37.4,-122.1))',
               limit: 3
@@ -56,6 +57,6 @@
     </script>
   </head>
   <body>
-    <div id="map-canvas"></div>
+    <div id="map-canvas" style="width:100%; height:100%"></div>
   </body>
 </html>
