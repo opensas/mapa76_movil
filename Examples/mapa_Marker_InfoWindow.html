@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head> <meta charset="UTF-8"><title>Detector Móvil de Centros Clandestinos de Detención</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
     </style>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFoTI11F2uG-NhCz7mzD2cWFnTTF9qoh8&sensor=false">
 
     </script>
-    <script type="text/javascript" src="../JQuery/jquery.min.js">
+    <script type="text/javascript" src="mapa76.js">
+    <script type="text/javascript" src="zepto.min.js">
     </script>
 
     <script type="text/javascript">
@@ -26,7 +30,7 @@
             mapOptions);
 
         var contentString = '<div id="content">'+
-            'Este es un mensaje en el InfoWindow re-copado'
+            'Usted se encuentra a pocos pasos de un Centro Clandestino de Detención que funcionó durante la época de la última Dictadura Militar'
             '</div>';
 
         var infowindow = new google.maps.InfoWindow({
@@ -56,7 +60,17 @@
     </script>
 
   </head>
+
   <body onload="initialize()">
+    <header>
+            <p id="message">Busca el Centro Clandestino m&aacutes cercano</p>
+        <button id="btn-search" class="btn btn-inverse">Encontrar</button>
+        
+    </header>
+    <footer>
+        <div id="map_canvas"  style="width:80%; height:400px"></div>
+    </footer>
+
     <div id="map_canvas" style="width:100%; height:70%"></div>
     <button onclick="testQuery()">Try it</button>
 
@@ -64,16 +78,13 @@
     <script>     
       function testQuery() {
         alert("1");
-        
         $.ajax({
-          //alert("1");
           type: "GET",
           url: "https://www.googleapis.com/fusiontables/v1/query?sql=SELECT%20*%20FROM%201KiW-7fK2u-wjSLmDafvTqhrdtqzN2bTT89qTELs%20ORDER%20BY%20ST_DISTANCE(geo,%20LATLNG(-34.58174,-58.4322))&key=AIzaSyDFoTI11F2uG-NhCz7mzD2cWFnTTF9qoh8"
           }).done(function( msg ) {
             console.log(msg);
           });
-
         }
-    </script>        
+    </script>   
   </body>
 </html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      /*#map_canvas { height: 70% }*/
+    </style>
+
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFoTI11F2uG-NhCz7mzD2cWFnTTF9qoh8&sensor=false">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFoTI11F2uG-NhCz7mzD2cWFnTTF9qoh8&sensor=false">
+    </script>
+
+    <script type="text/javascript" src="mapa76.js">
+    </script>
+
+    <script type="text/javascript" src="zepto.min.js">
+    </script>
+
+
+    <script type="text/javascript">
+    $(function () {
+      var CCDS;
+
+      var success = function(ccds) {
+        console.log(ccds);
+      };
+
+      mapa76.getNearbyCCDS({
+        tableId:    '1KiW-7fK2u-wjSLmDafvTqhrdtqzN2bTT89qTELs',
+        apiKey:     'AIzaSyAHn8YAHgeY5tIhCEsEWW7e-ND2hBc0HOc',
+        geoField:   'geo',
+        currentLat: -34.58174,
+        currentLng: -58.4322,
+        success:    success
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
