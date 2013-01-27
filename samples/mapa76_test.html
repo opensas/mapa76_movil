@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head> <meta charset="UTF-8"><title>Detector Móvil de Centros Clandestinos de Detención</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      /*#map_canvas { height: 70% }*/
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFoTI11F2uG-NhCz7mzD2cWFnTTF9qoh8&sensor=true">
+    </script>
+    <script type="text/javascript" src="js/fusionTableHelper.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/geo-min.js"></script>
+
+    <script type="text/javascript">
+      function initialize() {
+
+        var config = {
+          apiKey:     'AIzaSyAHn8YAHgeY5tIhCEsEWW7e-ND2hBc0HOc',
+          select:     'geo',
+          from:       '1KiW-7fK2u-wjSLmDafvTqhrdtqzN2bTT89qTELs',
+          limit:      3,
+          currentLat: -34.58174,
+          currentLng: -58.4322
+        };
+
+        var myLatlng = new google.maps.LatLng(config.currentLat, config.currentLng);
+
+        var mapOptions = {
+          center: myLatlng,
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+
+        var contentString = '<div id="content">'+
+            'Usted se encuentra a pocos pasos de un Centro Clandestino de Detención que funcionó durante la última Dictadura Militar'
+            '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Centros clandestinos de detención'
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map,marker);
+        });
+
+        var orderBy = fusionTableHelper.format(
+          'ST_DISTANCE(geo, LATLNG({1}, {2}))', config.currentLat, config.currentLng
+        );
+
+        var layer = new google.maps.FusionTablesLayer({
+          query: {
+            select:   config.select,
+            from:     config.from,
+            orderBy:  orderBy,
+            limit:    config.limit
+          }
+        });
+        layer.setMap(map);
+
+        var query = function(e) {
+          e.preventDefault();
+          fusionTableHelper.getNearestLocations({
+            apiKey:     config.apiKey,
+            select:     config.select,
+            from:       config.from,
+            limit:      config.limit,
+            currentLat: config.currentLat,
+            currentLng: config.currentLng,
+            success:    function(data) {
+              var message;
+              console.log(data);
+              message = 'Los ' + config.limit + ' centros clandestino de detención más cercanos:\n';
+              data.forEach(function(ccd) {
+                message += ccd.ccd + ' (' + ccd.ubic + ', ' + ccd.nom_prov + ')\n';
+              });
+              alert(message);
+            }
+          });
+        }
+
+        /*
+        if (geo_position_js.init()) {
+          geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+        } else {
+          alert("Functionality not available");
+        }
+        function success_callback(p) {
+          alert('lat='+p.coords.latitude.toFixed(2)+';lon='+p.coords.longitude.toFixed(2));
+        }
+        function error_callback(p) {
+          alert('error='+p.message);
+        }
+        */
+        $('#btn-search').click(query);
+      }
+    </script>
+  </head>
+
+  <body onload="initialize()" style="background-color:red">
+    <header>
+      <p id="message">Busca el Centro Clandestino m&aacute;s cercano</p>
+      <button id="btn-search" class="btn btn-inverse">Encontrar</button>
+    </header>
+
+    <footer>
+      <div id="map_canvas"  style="width:80%; height:400px"></div>
+    </footer>
+
+  </body>
+</html>
