@@ -1,4 +1,4 @@
 body{text-align: center}
 #message{color:white; font-weight:bold;padding:8px}
 #map_canvas{margin-top:1.2%;position:absolute;margin-left:10%}
-#btn-search{z-index:3; position:absolute;margin-left:-4%}
+#btn-search{z-index:3; position:relative;margin-left:0%}
